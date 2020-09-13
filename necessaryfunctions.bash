@@ -175,34 +175,19 @@ _MAINBLOCK_() {
 }
 
 _DOPROXY_() {
-	if [[ -e "$HOME"/.bash_profile ]]
-	then
-		grep "proxy" "$HOME"/.bash_profile | grep "export" >> root/bin/"$BINFNSTP" 2>/dev/null ||:
-	fi
-	if [[ -e "$HOME"/.bashrc ]]
-	then
-		grep "proxy" "$HOME"/.bashrc  | grep "export" >> root/bin/"$BINFNSTP" 2>/dev/null ||:
-	fi
-	if [[ -e "$HOME"/.profile ]]
-	then
-		grep "proxy" "$HOME"/.profile | grep "export" >> root/bin/"$BINFNSTP" 2>/dev/null ||:
-	fi
+	[[ -f "$HOME"/.bash_profile ]] && grep "proxy" "$HOME"/.bash_profile | grep "export" >> root/bin/"$BINFNSTP" 2>/dev/null ||:
+	[[ -f "$HOME"/.bashrc ]] && grep "proxy" "$HOME"/.bashrc  | grep "export" >> root/bin/"$BINFNSTP" 2>/dev/null ||:
+	[[ -f "$HOME"/.profile ]] && grep "proxy" "$HOME"/.profile | grep "export" >> root/bin/"$BINFNSTP" 2>/dev/null ||:
 }
 
 _DOKEYS_() {
-	if [[ "$CPUABI" = "$CPUABIX86" ]]
-	then
-		printf "./root/bin/keys x86\\n" >> root/bin/"$BINFNSTP"
-	elif [[ "$CPUABI" = "$CPUABIX86_64" ]]
-	then
-		printf "./root/bin/keys x86_64\\n" >> root/bin/"$BINFNSTP"
-	else
- 		printf "./root/bin/keys\\n" >> root/bin/"$BINFNSTP"
-	fi
+	[[ "$CPUABI" = "$CPUABIX86" ]] && printf "./root/bin/keys x86\\n" >> root/bin/"$BINFNSTP"|| [[ "$CPUABI" = "$CPUABIX86_64" ]] && printf "./root/bin/keys x86_64\\n" >> root/bin/"$BINFNSTP" || printf "./root/bin/keys\\n" >> root/bin/"$BINFNSTP"
 }
 
 _MAKEFINISHSETUP_() {
 	_CFLHDR_ root/bin/"$BINFNSTP"
+	_DOPROXY_
+	_DOKEYS_
 	[[ "${LCR:-}" -ne 1 ]] && LOCGEN=""
 	[[ "${LCR:-}" -ne 2 ]] && LOCGEN=""
 	[[ -z "${LCR:-}" ]] && LOCGEN="printf \"\\e[1;32m%s\\e[0;32m\"  \"==> \" && locale-gen  ||:"
@@ -400,7 +385,6 @@ _PREPINSTALLDIR_() {
 	_PREPROOTDIR_
 	_SETLANGUAGE_
 	_ADDADDS_
-	_DOPROXY_
 	_MAKEFINISHSETUP_
 	_MAKESETUPBIN_
 	_MAKESTARTBIN_
