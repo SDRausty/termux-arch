@@ -47,6 +47,7 @@ _ADDADDS_() {
 	_ADDpci_
 	_ADDprofile_
 	_ADDt_
+	_ADDtools_
 	_ADDtour_
 	_ADDtrim_
 	_ADDv_
