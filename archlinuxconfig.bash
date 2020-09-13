@@ -112,7 +112,7 @@ _ADDbash_profile_() {
 	do
 	 	printf "%s=\"%s\"\\n" "export ${LC_TYPE[i]}" "$ULANGUAGE.UTF-8" >> root/.bash_profile
 	done
-	[[ -f "$HOME"/.bash_profile ]] && grep proxy "$HOME"/.bash_profile | grep "export" >> root/.bash_profile /dev/null 2>&-
+	[[ -f "$HOME"/.bash_profile ]] && grep proxy "$HOME"/.bash_profile | grep "export" >> root/.bash_profile >/dev/null ||:
 }
 
 _ADDbashrc_() {
@@ -156,7 +156,7 @@ _ADDbashrc_() {
 	alias q='exit'
 	# .bashrc EOF
 	EOM
-	[ -f "$HOME/.bashrc" ] && grep proxy "$HOME/.bashrc" | grep "export" >>  root/.bashrc /dev/null 2>&-
+	[ -f "$HOME/.bashrc" ] && grep proxy "$HOME/.bashrc" | grep "export" >>  root/.bashrc >/dev/null ||:
 }
 
 _ADDcdtd_() {
