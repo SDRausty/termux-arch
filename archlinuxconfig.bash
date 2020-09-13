@@ -112,7 +112,7 @@ _ADDbash_profile_() {
 	do
 	 	printf "%s=\"%s\"\\n" "export ${LC_TYPE[i]}" "$ULANGUAGE.UTF-8" >> root/.bash_profile
 	done
-	[[ -f "$HOME"/.bash_profile ]] && grep proxy "$HOME"/.bash_profile | grep "export" >> root/.bash_profile ||:
+	[[ -f "$HOME"/.bash_profile ]] && grep proxy "$HOME"/.bash_profile | grep "export" >> root/.bash_profile /dev/null 2>&-
 }
 
 _ADDbashrc_() {
@@ -156,10 +156,7 @@ _ADDbashrc_() {
 	alias q='exit'
 	# .bashrc EOF
 	EOM
-	if [ -e "$HOME"/.bashrc ]
-	then
-		grep proxy "$HOME"/.bashrc | grep "export" >>  root/.bashrc 2>/dev/null ||:
-	fi
+	[ -f "$HOME/.bashrc" ] && grep proxy "$HOME/.bashrc" | grep "export" >>  root/.bashrc /dev/null 2>&-
 }
 
 _ADDcdtd_() {
@@ -446,6 +443,10 @@ _ADDga_() {
 	# ga EOF
 	EOM
 	chmod 700 root/bin/ga
+}
+
+_ADDsystfiles_() {
+	[[ -f $SYSTFILE ]] && cp $SYSTFILE "$INSTALLDIR/root/.gitconfig"
 }
 
 _ADDgitconfig_() {
@@ -1072,8 +1073,8 @@ _MODdotfile_() {
 }
 
 _DOMODdotfiles_() {
-	# Have you heard of metacarpals syndrome?  My metacarpals flare from vibrations.  To disable this feature replace the contents of this function with a colon (:) like in this example:
-# 	_DOMODdotfiles_() {
+	# Have you heard of metacarpals syndrome?  My metacarpals flare from vibrations.  To disable the silent bell feature replace the contents of this function with a colon (:) like in this example:
+# 	_DOMODexample_() {
 # 		:
 # 	}
 	# add (setq visible-bell 1) to file /root/.emacs
