@@ -233,7 +233,7 @@ _MAKESETUPBIN_() {
 	_CFLHDR_ root/bin/setupbin.bash
 	cat >> root/bin/setupbin.bash <<- EOM
 	set +Eeuo pipefail
-	umask 022
+	umask 0022
 	EOM
 	printf "%s\\n" "$PROOTSTMNT /root/bin/$BINFNSTP ||:" >> root/bin/setupbin.bash
 	cat >> root/bin/setupbin.bash <<- EOM
@@ -246,7 +246,7 @@ _MAKESTARTBIN_() {
 	_CFLHDR_ "$STARTBIN"
 	printf "%s\\n" "${FLHDRP[@]}" >> "$STARTBIN"
 	cat >> "$STARTBIN" <<- EOM
-	umask 022
+	umask 0022
 	COMMANDG="\$(command -v getprop)" ||:
 	if [[ "\$COMMANDG" = "" ]]
 	then
