@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-Allow: /sitemap.txt
-Sitemap: https://TermuxArch.github.io/TermuxArch/sitemap.txt
-
