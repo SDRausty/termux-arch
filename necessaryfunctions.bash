@@ -231,7 +231,7 @@ _MAKESETUPBIN_() {
 	_CFLHDR_ root/bin/setupbin.bash
 	cat >> root/bin/setupbin.bash <<- EOM
 	set +Eeuo pipefail
-	umask 0002
+	umask 022
 	EOM
 	printf "%s\\n" "$PROOTSTMNT /root/bin/$BINFNSTP ||:" >> root/bin/setupbin.bash
 	cat >> root/bin/setupbin.bash <<- EOM
@@ -264,7 +264,7 @@ _MAKESTARTBIN_() {
 	if [[ -z "\${1:-}" ]]
 	then
 		set +Eeuo pipefail
-		umask 0002
+		umask 022
 	EOM
 		printf "%s\\n" "$PROOTSTMNT /bin/bash -l ||: " >> "$STARTBIN"
 	cat >> "$STARTBIN" <<- EOM
@@ -280,7 +280,7 @@ _MAKESTARTBIN_() {
 		printf '\033]2; $STARTBIN command 📲  \007'
 		touch $INSTALLDIR/root/.chushlogin
 		set +Eeuo pipefail
-		umask 0002
+		umask 022
 	EOM
 		printf "%s\\n" "$PROOTSTMNT /bin/bash -lc \"\$AR2AR\" ||:" >> "$STARTBIN"
 	cat >> "$STARTBIN" <<- EOM
@@ -292,7 +292,7 @@ _MAKESTARTBIN_() {
 	then
 		printf '\033]2; $STARTBIN login user [options] 📲  \007'
 		set +Eeuo pipefail
-		umask 0002
+		umask 022
 	EOM
 		printf "%s\\n" "$PROOTSTMNTUU /bin/su - \"\$AR2AR\" ||:" >> "$STARTBIN"
 	cat >> "$STARTBIN" <<- EOM
@@ -304,7 +304,7 @@ _MAKESTARTBIN_() {
 	then
 		printf '\033]2; $STARTBIN login user [options] 📲  \007'
 		set +Eeuo pipefail
-		umask 0002
+		umask 022
 	EOM
 		printf "%s\\n" "$PROOTSTMNTU /bin/su - \"\$AR2AR\" ||:" >> "$STARTBIN"
 	cat >> "$STARTBIN" <<- EOM
@@ -315,7 +315,7 @@ _MAKESTARTBIN_() {
 	then
 		printf '\033]2; $STARTBIN raw ARGS 📲  \007'
 		set +Eeuo pipefail
-		umask 0002
+		umask 022
 	EOM
 		printf "%s\\n" "$PROOTSTMNT /bin/\"\$AR2AR\" ||:" >> "$STARTBIN"
 	cat >> "$STARTBIN" <<- EOM
@@ -332,7 +332,7 @@ _MAKESTARTBIN_() {
 			touch $INSTALLDIR/home/"\$2"/.chushlogin
 		fi
 		set +Eeuo pipefail
-		umask 0002
+		umask 022
 	EOM
 		printf "%s\\n" "$PROOTSTMNTU /bin/su - \"\$2\" -c \"\$AR3AR\" ||:" >> "$STARTBIN"
 	cat >> "$STARTBIN" <<- EOM
