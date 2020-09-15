@@ -16,6 +16,10 @@ _BLOOM_() { # Bloom = `setupTermuxArch manual verbose`
 	printf '\033]2;  TermuxArch Bloom option via `setupTermuxArch bloom` 📲 \007'
 }
 
+_DOTHRF_() { # do the root user files
+	[[ -f $1 ]] && (printf "\\e[1;32m%s\\e[0;32m%s\\e[0m\\n" "==>" " cp $1 /var/backups/${INSTALLDIR##*/}/$1.$SDATE.bkp" && cp "$1" "var/backups/${INSTALLDIR##*/}/$1.$SDATE.bkp") || printf "%s" "copy file '$1' if found : file not found : continuing : "
+}
+
 _EDITFILES_() {
 	if [[ "${ceds[$i]}" = "vi" ]]
 	then
