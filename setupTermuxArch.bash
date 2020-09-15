@@ -8,7 +8,7 @@ IFS=$'\n\t'
 set -Eeuo pipefail
 shopt -s nullglob globstar
 umask 022
-VERSIONID=2.0.255
+VERSIONID=2.0.256
 ## INIT FUNCTIONS ##############################################################
 _STRPERROR_() { # run on script error
 	local RV="$?"
@@ -108,9 +108,20 @@ _CHKSELF_() {	# compare setupTermuxArch and file being used
 	cd "$TAMPDIR"
 }
 
+_COREFILES_() {
+	[[ -f archlinuxconfig.bash ]] && [[ -f espritfunctions.bash ]] && [[ -f getimagefunctions.bash ]] && [[ -f knownconfigurations.bash ]] && [[ -f maintenanceroutines.bash ]] && [[ -f necessaryfunctions.bash ]] && [[ -f printoutstatements.bash ]] && [[ -f setupTermuxArch ]]
+}
+
 _COREFILESDO_() {
-	COREARRY=("archlinuxconfig.bash" "espritfunctions.bash" "getimagefunctions.bash" "knownconfigurations.bash" "maintenanceroutines.bash" "necessaryfunctions.bash" "printoutstatements.bash" "setupTermuxArch")
-	for COREFILE in ${COREARRY[@]} ; do [[ -f "$COREFILE" ]] && _COREFILESLOAD_ || cd "$TAMPDIR" && _DWNL_ && _CHKDWN_ && _CHK_ "$@" && printf "%s\\n" "loaded file $COREFILE " && break ; done
+	if _COREFILES_
+	then
+		_COREFILESLOAD_
+	else
+		cd "$TAMPDIR"
+		_DWNL_
+		_CHKDWN_
+		_CHK_ "$@"
+	fi
 }
 
 _COREFILESLOAD_() {
@@ -210,8 +221,8 @@ _DWNL_() { # download TermuxArch from Github
 		FILE[sha]="https://raw.githubusercontent.com/TermuxArch/gensTermuxArch/master/setupTermuxArch.sha512"
 		FILE[tar]="https://raw.githubusercontent.com/TermuxArch/gensTermuxArch/master/setupTermuxArch.tar.gz"
 	else	# get stable version from:
-		FILE[sha]="https://raw.githubusercontent.com/SDRausty/termux-arch/master/setupTermuxArch.sha512"
-		FILE[tar]="https://raw.githubusercontent.com/SDRausty/termux-arch/master/setupTermuxArch.tar.gz"
+		FILE[sha]="https://raw.githubusercontent.com/TermuxArch/TermuxArch/master/setupTermuxArch.sha512"
+		FILE[tar]="https://raw.githubusercontent.com/TermuxArch/TermuxArch/master/setupTermuxArch.tar.gz"
 	fi
 	if [[ "$DM" = aria2 ]]
 	then	# use https://github.com/aria2/aria2
