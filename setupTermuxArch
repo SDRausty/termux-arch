@@ -8,7 +8,7 @@ IFS=$'\n\t'
 set -Eeuo pipefail
 shopt -s nullglob globstar
 umask 022
-VERSIONID=2.0.257
+VERSIONID=2.0.258
 ## INIT FUNCTIONS ##############################################################
 _STRPERROR_() { # run on script error
 	local RV="$?"
@@ -221,8 +221,8 @@ _DWNL_() { # download TermuxArch from Github
 		FILE[sha]="https://raw.githubusercontent.com/TermuxArch/gensTermuxArch/master/setupTermuxArch.sha512"
 		FILE[tar]="https://raw.githubusercontent.com/TermuxArch/gensTermuxArch/master/setupTermuxArch.tar.gz"
 	else	# get stable version from:
-		FILE[sha]="https://raw.githubusercontent.com/TermuxArch/TermuxArch/master/setupTermuxArch.sha512"
-		FILE[tar]="https://raw.githubusercontent.com/TermuxArch/TermuxArch/master/setupTermuxArch.tar.gz"
+		FILE[sha]="https://raw.githubusercontent.com/SDRausty/termux-arch/master/setupTermuxArch.sha512"
+		FILE[tar]="https://raw.githubusercontent.com/SDRausty/termux-arch/TermuxArch/master/setupTermuxArch.tar.gz"
 	fi
 	if [[ "$DM" = aria2 ]]
 	then	# use https://github.com/aria2/aria2
@@ -765,17 +765,17 @@ then
 	OPT=MANUAL
 	_OPT1_ "$@"
 	_INTRO_ "$@"
+## [mat[ix]]  Print TermuxArch source code as Matrix
+elif [[ "${1//-}" = [Mm][Aa][Tt]* ]]
+then
+	printf "\\nSetting mode to matrix.\\n"
+	_TAMATRIX_
 ## [o[ption]]  Option under development.
 elif [[ "${1//-}" = [Oo]* ]]
 then
 	printf "\\nSetting mode to option.\\n"
- 	printf "\\e[1;32m%s \\e[0m" "$(tr -d '\n' < $0)"
-	# split the string
-	IFS=';' read -ra my_array <<< "$(tr -d '\n' < $0)"
-	# print the split string
- 	for EMSTRING in "${my_array[@]}" ; do printf "\\e[0;32m%s" "$EMSTRING" && sleep 0.0"$(shuf -i 0-999 -n 1)" ; done
+	_TAMATRIX_
 ## [p[urge] [customdir]]  Remove Arch Linux.
-	tail -n 8 "$0"
 elif [[ "${1//-}" = [Pp]* ]]
 then
 	printf "\\nSetting mode to purge.\\n"
