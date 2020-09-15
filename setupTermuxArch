@@ -8,7 +8,7 @@ IFS=$'\n\t'
 set -Eeuo pipefail
 shopt -s nullglob globstar
 umask 022
-VERSIONID=2.0.252
+VERSIONID=2.0.253
 ## INIT FUNCTIONS ##############################################################
 _STRPERROR_() { # run on script error
 	local RV="$?"
@@ -109,7 +109,11 @@ _CHKSELF_() {	# compare setupTermuxArch and file being used
 }
 
 _COREFILES_() {
-	[[ -f archlinuxconfig.bash ]] && [[ -f espritfunctions.bash ]] && [[ -f getimagefunctions.bash ]] && [[ -f knownconfigurations.bash ]] && [[ -f maintenanceroutines.bash ]] && [[ -f necessaryfunctions.bash ]] && [[ -f printoutstatements.bash ]] && [[ -f setupTermuxArch ]]
+	COREARRY=("archlinuxconfig.bash" "espritfunctions.bash" "getimagefunctions.bash" "knownconfigurations.bash" "maintenanceroutines.bash" "necessaryfunctions.bash" "printoutstatements.bash" "setupTermuxArch")
+	for i in ${COREARRY[@]}
+	do
+		[[ -f "$i" ]]
+	done
 }
 
 _COREFILESDO_() {
