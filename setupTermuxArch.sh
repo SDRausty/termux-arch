@@ -8,7 +8,7 @@ IFS=$'\n\t'
 set -Eeuo pipefail
 shopt -s nullglob globstar
 umask 022
-VERSIONID=2.0.260
+VERSIONID=2.0.261
 ## INIT FUNCTIONS ##############################################################
 _STRPERROR_() { # run on script error
 	local RV="$?"
@@ -98,12 +98,12 @@ _CHKSELF_() {	# compare setupTermuxArch and file being used
 	cd "$WFDIR"	# change directory to working file directory
 	if [[ "$(<$TAMPDIR/setupTermuxArch)" != "$(<${0##*/})" ]] # differ
 	then	# update the working file to newest version
-		cp "$TAMPDIR/setupTermuxArch" "$0"
+		cp "$TAMPDIR/setupTermuxArch" "${0##*/}"
 		rm -rf "$TAMPDIR"
 		cd "$WDIR"	# change directory back to working directory
 		[[ -z "${ARGS:-}" ]] && printf "\\e[1;32mFile \\e[0;32m'%s'\\e[1;32m UPDATED\\e[1;34m:\\e[0;32m run 'bash %s' again if this automatic update was unsuccessful.\\n\\e[1;32mRESTARTED \\e[0;32m'%s'\\e[1;34m:\\e[1;32m CONTINUING...\\n\\n\\e[0m" "${0##*/}" "${0##*/}" "${0##*/}" || printf "\\e[0;32m'%s'\\e[1;32m UPDATED\\e[1;34m:\\e[0;32m run 'bash %s' again if this automatic update was unsuccessful.\\n\\e[1;32mRESTARTED \\e[0;32m'%s'\\e[1;34m:\\e[1;32m CONTINUING...\\n\\n\\e[0m" "${0##*/} $ARGS" "${0##*/} $ARGS" "${0##*/} $ARGS"
 		# restart updated version
-		. "$0" "$ARGS"
+		. $(echo "$ARGS" | xargs "${0##*/}") 
 	fi
 	cd "$TAMPDIR"
 }
@@ -584,7 +584,7 @@ EMPARIAS=([APTIN]="# apt install string" [COMMANDIF]="" [COMMANDG]="" [CPUABI]="
 for PKG in ${!EMPARIAS[@]} ; do declare "$PKG"="" ; done
 declare -a LC_TYPE	# declare array for locale types
 declare -A FILE		# declare associative array
-ECLAVARR=(ARGS APTIN BINFNSTP COMMANDIF COMMANDR COMMANDG CPUABI CPUABI5 CPUABI7 CPUABI8 CPUABIX86 CPUABIX86_64 DFL DMVERBOSE DM ELCR ed FSTND INSTALLDIR LCC LCP OPT ROOTDIR WDIR SDATE STI STIME STRING1 STRING2)
+ECLAVARR=(ARGS APTIN BINFNSTP COMMANDIF COMMANDR COMMANDG CPUABI CPUABI5 CPUABI7 CPUABI8 CPUABIX86 CPUABIX86_64 DFL DMVERBOSE DM EDO01LCR ELCR ed FSTND INSTALLDIR LCC LCP OPT ROOTDIR WDIR SDATE STI STIME STRING1 STRING2)
 for ECLAVARS in ${ECLAVARR[@]} ; do declare $ECLAVARS ; done
 ARGS="${@%/}"
 CPUABI5="armeabi"	# Used for development;  The command 'getprop ro.product.cpu.abi' can be used to ascertain the device architecture.  Matching an alternate CPUABI* will install an alternate architecture on device.  The original device architecture must be changed to something else so it does not match.  This is usefull with QEMU to install alternate architectures on device.
@@ -773,7 +773,11 @@ then
 elif [[ "${1//-}" = [Oo]* ]]
 then
 	printf "\\nSetting mode to option.\\n"
-	_TAMATRIX_
+	EDO01LCR=0 
+	LCR="2"
+	printf "\\n\\e[0;32mSetting mode\\e[1;34m : \\e[1;32mminimal refresh with refresh user directories\\e[1;34m :\\e[0;32m For a full refresh you can use the%s \\e[1;32mbash '%s' \\e[0;32m%s\\e[1;34m...\\n\\e[0m" "" "${0##*/} ref[resh]" "command"
+	_ARG2DIR_ "$@"
+	_INTROREFRESH_ "$@"
 ## [p[urge] [customdir]]  Remove Arch Linux.
 elif [[ "${1//-}" = [Pp]* ]]
 then
@@ -789,14 +793,14 @@ then
 ## [re [customdir]]  Refresh the Arch Linux in Termux PRoot scripts created by TermuxArch.  Useful for refreshing the root user's home directory and user home directories and the TermuxArch generated scripts to their newest version.
 elif [[ "${1//-}" = [Rr][Ee] ]]
 then
-	export LCR="2"
+	LCR="2"
 	printf "\\n\\e[0;32mSetting mode\\e[1;34m : \\e[1;32mminimal refresh with refresh user directories\\e[1;34m :\\e[0;32m For a full refresh you can use the%s \\e[1;32mbash '%s' \\e[0;32m%s\\e[1;34m...\\n\\e[0m" "" "${0##*/} ref[resh]" "command"
 	_ARG2DIR_ "$@"
 	_INTROREFRESH_ "$@"
 ## [r [customdir]]  Refresh the Arch Linux in Termux PRoot scripts created by TermuxArch.  Useful for refreshing the root user's home directory and the TermuxArch generated scripts to their newest version.
 elif [[ "${1//-}" = [Rr] ]]
 then
-	export LCR="1"
+	LCR="1"
 	printf "\\n\\e[0;32mSetting mode\\e[1;34m : \\e[1;32mminimal refresh\\e[1;34m :\\e[0;32m For a full refresh you can use the%s \\e[1;32mbash '%s' \\e[0;32m%s\\e[1;34m...\\n\\e[0m" "" "${0##*/} ref[resh]" "command"
 	_ARG2DIR_ "$@"
 	_INTROREFRESH_ "$@"
