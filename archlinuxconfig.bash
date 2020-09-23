@@ -724,7 +724,7 @@ _ADDpc_() {
 	_CFLHDR_ root/bin/pc "# pacman install packages wrapper without system update"
 	cat >> root/bin/pc <<- EOM
 	declare -g ARGS="\$@"
-	umask 022
+	umask 0022
 	_TRPET_() { # on exit
 		printf "\\\\e[?25h\\\\e[0m"
 		set +Eeuo pipefail
@@ -765,7 +765,7 @@ _ADDpci_() {
 	_CFLHDR_ root/bin/pci "# Pacman install packages wrapper with system update."
 	cat >> root/bin/pci <<- EOM
 	declare ARGS="\$@"
-	umask 022
+	umask 0022
 	_TRPET_() { # on exit
 		printf "\\\\e[?25h\\\\e[0m"
 		set +Eeuo pipefail
