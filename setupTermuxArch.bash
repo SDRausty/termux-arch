@@ -9,7 +9,7 @@ set -Eeuo pipefail
 shopt -s nullglob globstar
 umask 0022
 unset LD_PRELOAD
-VERSIONID=2.0.276
+VERSIONID=2.0.277
 ## INIT FUNCTIONS ##############################################################
 _STRPERROR_() { # run on script error
 	local RV="$?"
@@ -520,18 +520,13 @@ _PSGI1ESTRING_() {	# print signal generated in arg 1 format
 }
 
 _QEMU_ () {
+	printf "Setting mode to qemu.\\n"
 	printf "%s\\n" "This feature is being developed.  Please select the architecture by number from this list:"
 	select ARCHITECTURE in armeabi armeabi-v7a arm64-v8a x86 x86_64;
 	do
 		CPUABI="$ARCHITECTURE" 
 		[[ $CPUABI == *arm* ]] || [[ $CPUABI == *86* ]] && printf "%s\\n" "You picked ($REPLY) $CPUABI.  The chosen architecture for installation is $CPUABI." && QEMUCR="0" && break || printf "%s\\n" "Please select the architecture by number."
 	done
-echo $QEMUCR
-echo $QEMUCR
-echo $QEMUCR
-echo $CPUABI
-echo $CPUABI
-echo $CPUABI
 }
 
 _RMARCH_() {
@@ -805,7 +800,6 @@ then
 ## [q[emu] [customdir]]  Install alternate architecture on smartphone with QEMU.
 elif [[ "${1//-}" = [Qq]* ]]
 then
-	printf "\\nSetting mode to qemu.\\n"
 	_QEMU_
 	_OPT1_ "$@"
 	_INTRO_ "$@"
