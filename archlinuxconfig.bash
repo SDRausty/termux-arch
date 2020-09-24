@@ -84,6 +84,13 @@ _ADDaddresolvconf_() {
 	nameserver 8.8.8.8
 	nameserver 8.8.4.4
 	EOM
+	if ! grep nameserver etc/resolv.conf
+	then
+		cat >> etc/resolv.conf <<- EOM
+		nameserver 8.8.8.8
+		nameserver 8.8.4.4
+		EOM
+	fi
 }
 
 _ADDbash_logout_() {
