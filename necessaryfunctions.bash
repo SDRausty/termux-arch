@@ -14,7 +14,7 @@ _ADDADDS_() {
 	_ADDMOTD_
 	_ADDMOTO_
 	_ADDREADME_
-	_ADDaddresolvconf_
+	_ADDresolvconf_
 	_ADDae_
 	_ADDbash_logout_
 	_ADDbash_profile_

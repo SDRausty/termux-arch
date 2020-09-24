@@ -78,18 +78,21 @@ _ADDae_() {
 	chmod 700 root/bin/ae
 }
 
-_ADDaddresolvconf_() {
+_ADDresolvconf_() {
 	[ ! -d run/systemd/resolve ] && mkdir -p run/systemd/resolve
 	cat > run/systemd/resolve/resolv.conf <<- EOM
 	nameserver 8.8.8.8
 	nameserver 8.8.4.4
 	EOM
-	if ! grep nameserver etc/resolv.conf
-	then
-		cat >> etc/resolv.conf <<- EOM
-		nameserver 8.8.8.8
-		nameserver 8.8.4.4
-		EOM
+	if [ -f etc/resolve.conf ]
+	then 
+		if ! grep nameserver etc/resolv.conf 1>/dev/null
+		then
+			cat >> etc/resolv.conf <<- EOM
+			nameserver 8.8.8.8
+			nameserver 8.8.4.4
+			EOM
+		fi
 	fi
 }
 
