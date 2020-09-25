@@ -9,7 +9,7 @@ set -Eeuo pipefail
 shopt -s nullglob globstar
 umask 0022
 unset LD_PRELOAD
-VERSIONID=2.0.287
+VERSIONID=2.0.289
 ## INIT FUNCTIONS ##############################################################
 _STRPERROR_() { # run on script error
 	local RV="$?"
@@ -49,11 +49,10 @@ _STRPQUIT_() { # run on quit
 	printf "\\e[?25h\\e[1;7;38;5;0mTermuxArch WARNING:  Quit signal %s received!\\e[0m\\n" "$?"
 	exit 221
 }
-
 trap '_STRPERROR_ $LINENO $BASH_COMMAND $?' ERR
-trap _STRPEXIT_ EXIT
-trap _STRPSIGNAL_ HUP INT TERM
-trap _STRPQUIT_ QUIT
+trap '_STRPEXIT_ $LINENO $BASH_COMMAND $?' EXIT
+trap '_STRPSIGNAL_ $LINENO $BASH_COMMAND $?' HUP INT TERM
+trap '_STRPQUIT_ $LINENO $BASH_COMMAND $?' QUIT
 
 _ARG2DIR_() {  # argument as ROOTDIR
 	ARG2="${@:2:1}"

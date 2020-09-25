@@ -7,6 +7,14 @@
 _ADDAUSER_() {
 	_CFLHDR_ root/bin/addauser "# add Arch Linux in Termux PRoot user"
 	cat >> root/bin/addauser <<- EOM
+	_HUSDIRC_() {
+	if [[ ! -d "/home/\$@" ]]
+	then
+		_FUNADDU_ "\$@"
+	else
+		printf "\\\\e[1;31mDIRECTORY: \\\\e[1;37m'/home/\$@ exists'\\\\e[1;31m: EXITING...\\\\n"
+	fi
+	}
 	_FUNADDU_() {
 	if [[ -z "\${1:-}" ]]
 	then
@@ -42,7 +50,7 @@ _ADDAUSER_() {
 		printf "\\\\e[1;31m%s\\\\e[1;37m%s\\\\e[1;32m%s\\\\e[1;37m%s\\\\n\\\\n" "Signal generated in '\$1' : Cannot complete task : " "Continuing..."
 		printf "\\\\e[1;34m%s\\\\e[0;34m%s\\\\e[1;34m%s\\\\e[0;34m%s\\\\e[1;34m%s\\\\e[0m\\\\n\\\\n" "  If you find improvements for " "setupTermuxArch" " and " "\$0" " please open an issue and accompanying pull request."
 	}
-	_FUNADDU_ "\$@"
+	_HUSDIRC_ "\$@"
 	# addauser EOF
 	EOM
 	chmod 700 root/bin/addauser
