@@ -183,7 +183,15 @@ _DOPROXY_() {
 _MAKEFINISHSETUP_() {
 	_CFLHDR_ "root/bin/$BINFNSTP"
 	_DOKEYS_() {
-		[[ "$CPUABI" = "$CPUABIX86" ]] && printf "/root/bin/keys x86\\n" >> root/bin/"$BINFNSTP"|| [[ "$CPUABI" = "$CPUABIX86_64" ]] && printf "/root/bin/keys x86_64\\n" >> root/bin/"$BINFNSTP" || printf "/root/bin/keys\\n" >> root/bin/"$BINFNSTP"
+		if [[ "$CPUABI" = "$CPUABIX86" ]]
+		then 
+			printf "/root/bin/keys x86\\n" >> root/bin/"$BINFNSTP"
+		elif [[ "$CPUABI" = "$CPUABIX86_64" ]]
+		then
+			 printf "/root/bin/keys x86_64\\n" >> root/bin/"$BINFNSTP" 
+		else
+			printf "/root/bin/keys\\n" >> root/bin/"$BINFNSTP"
+		fi
 	}
 	_DOPROXY_
 	_DOKEYS_
@@ -195,7 +203,7 @@ _MAKEFINISHSETUP_() {
 		:
 	else
 		_DOKEYS_
-		pacman -Sy grep gzip sed --noconfirm --color=always 
+		pacman -Sy grep gzip sed sudo --noconfirm --color=always 
 		locale-gen 
 	fi"
 	cat >> root/bin/"$BINFNSTP" <<- EOM
