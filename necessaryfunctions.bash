@@ -174,10 +174,6 @@ _MAINBLOCK_() {
 	exit
 }
 
-_DOKEYS_() {
-	[[ "$CPUABI" = "$CPUABIX86" ]] && printf "/root/bin/keys x86\\n" >> root/bin/"$BINFNSTP"|| [[ "$CPUABI" = "$CPUABIX86_64" ]] && printf "/root/bin/keys x86_64\\n" >> root/bin/"$BINFNSTP" || printf "/root/bin/keys\\n" >> root/bin/"$BINFNSTP"
-}
-
 _DOPROXY_() {
 	[[ -f "$HOME"/.bash_profile ]] && grep "proxy" "$HOME"/.bash_profile | grep "export" >> root/bin/"$BINFNSTP" 2>/dev/null ||:
 	[[ -f "$HOME"/.bashrc ]] && grep "proxy" "$HOME"/.bashrc  | grep "export" >> root/bin/"$BINFNSTP" 2>/dev/null ||:
@@ -186,6 +182,11 @@ _DOPROXY_() {
 
 _MAKEFINISHSETUP_() {
 	_CFLHDR_ "root/bin/$BINFNSTP"
+	_DOKEYS_() {
+		[[ "$CPUABI" = "$CPUABIX86" ]] && printf "/root/bin/keys x86\\n" >> root/bin/"$BINFNSTP"|| [[ "$CPUABI" = "$CPUABIX86_64" ]] && printf "/root/bin/keys x86_64\\n" >> root/bin/"$BINFNSTP" || printf "/root/bin/keys\\n" >> root/bin/"$BINFNSTP"
+	}
+	_DOPROXY_
+	_DOKEYS_
 	[[ "${LCR:-}" -ne 1 ]] && LOCGEN=""
 	[[ "${LCR:-}" -ne 2 ]] && LOCGEN=""
 	[[ -z "${LCR:-}" ]] && LOCGEN="printf \"\\e[1;32m%s\\e[0;32m\"  \"==> \" 
@@ -193,11 +194,10 @@ _MAKEFINISHSETUP_() {
 	then
 		:
 	else
+		_DOKEYS_
 		pacman -Sy grep gzip sed --noconfirm --color=always 
 		locale-gen 
 	fi"
-	_DOPROXY_
-	# _DOKEYS_
 	cat >> root/bin/"$BINFNSTP" <<- EOM
 	_PMFSESTRING_() {
 	printf "\\e[1;31m%s\\e[1;37m%s\\e[1;32m%s\\e[1;37m%s\\n\\n" "Signal generated in '\$1' : Cannot complete task : " "Continuing...   To correct the error run " "setupTermuxArch refresh" " to attempt to finish the autoconfiguration."
