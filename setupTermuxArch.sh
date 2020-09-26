@@ -9,7 +9,7 @@ set -Eeuo pipefail
 shopt -s nullglob globstar
 umask 0022
 unset LD_PRELOAD
-VERSIONID=2.0.296
+VERSIONID=2.0.297
 ## INIT FUNCTIONS ##############################################################
 _STRPERROR_() { # run on script error
 	local RV="$?"
@@ -527,6 +527,20 @@ _QEMU_ () {
 	select ARCHITECTURE in armeabi armeabi-v7a arm64-v8a x86 x86_64;
 	do
 		CPUABI="$ARCHITECTURE" 
+		if [[ "$ARCHITECTURE" == armeabi ]] || [[ "$ARCHITECTURE" == armeabi-v7a ]]
+		then
+			ARCHITEC="arm" 
+		elif [[ "$ARCHITECTURE" == arm64-v8a ]] 
+		then
+			ARCHITEC="aarch64" 
+		elif [[ "$ARCHITECTURE" == x86 ]] 
+		then
+			ARCHITEC="i386" 
+		elif [[ "$ARCHITECTURE" == x86_64 ]] 
+		then
+			ARCHITEC="x86_64" 
+		fi
+		APTIN+="qemu-user-${ARCHITECTURE//$ARCHITEC} "
 		[[ $CPUABI == *arm* ]] || [[ $CPUABI == *86* ]] && printf "%s\\n" "You picked ($REPLY) $CPUABI.  The chosen architecture for installation is $CPUABI." && QEMUCR=0 && break || printf "%s\\n" "Please select the architecture by number."
 	done
 }
