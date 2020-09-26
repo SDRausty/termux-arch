@@ -27,8 +27,9 @@ _ADDADDS_() {
 	_ADDcsystemctl_
 	_ADDdfa_
 	_ADDexd_
-	_ADDfbindexample_
-	_ADDfbindprocpcidevices_
+	_ADDbindexample_
+	_ADDfbindprocpcidevices.prs_
+	_ADDfbindprocshmem.prs_
 	_ADDfbindprocuptime_
 	_ADDfbinds_
 	_ADDfibs_
@@ -174,7 +175,7 @@ _MAINBLOCK_() {
 }
 
 _DOKEYS_() {
-	[[ "$CPUABI" = "$CPUABIX86" ]] && printf "/root/bin/keys x86\\n" >> root/bin/"$BINFNSTP"|| [[ "$CPUABI" = "$CPUABIX86_64" ]] && printf "./root/bin/keys x86_64\\n" >> root/bin/"$BINFNSTP" || printf "/root/bin/keys\\n" >> root/bin/"$BINFNSTP"
+	[[ "$CPUABI" = "$CPUABIX86" ]] && printf "/root/bin/keys x86\\n" >> root/bin/"$BINFNSTP"|| [[ "$CPUABI" = "$CPUABIX86_64" ]] && printf "/root/bin/keys x86_64\\n" >> root/bin/"$BINFNSTP" || printf "/root/bin/keys\\n" >> root/bin/"$BINFNSTP"
 }
 
 _DOPROXY_() {
@@ -184,12 +185,19 @@ _DOPROXY_() {
 }
 
 _MAKEFINISHSETUP_() {
-	_CFLHDR_ root/bin/"$BINFNSTP"
+	_CFLHDR_ "root/bin/$BINFNSTP"
 	[[ "${LCR:-}" -ne 1 ]] && LOCGEN=""
 	[[ "${LCR:-}" -ne 2 ]] && LOCGEN=""
-	[[ -z "${LCR:-}" ]] && LOCGEN="printf \"\\e[1;32m%s\\e[0;32m\"  \"==> \" && locale-gen  ||:"
+	[[ -z "${LCR:-}" ]] && LOCGEN="printf \"\\e[1;32m%s\\e[0;32m\"  \"==> \" 
+	if locale-gen 
+	then
+		:
+	else
+		pacman -Sy grep sed --noconfirm --color=always 
+		locale-gen 
+	fi"
 	_DOPROXY_
-#	_DOKEYS_
+	_DOKEYS_
 	cat >> root/bin/"$BINFNSTP" <<- EOM
 	_PMFSESTRING_() {
 	printf "\\e[1;31m%s\\e[1;37m%s\\e[1;32m%s\\e[1;37m%s\\n\\n" "Signal generated in '\$1' : Cannot complete task : " "Continuing...   To correct the error run " "setupTermuxArch refresh" " to attempt to finish the autoconfiguration."
