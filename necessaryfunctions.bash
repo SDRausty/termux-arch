@@ -193,7 +193,7 @@ _MAKEFINISHSETUP_() {
 	then
 		:
 	else
-		pacman -Sy grep sed --noconfirm --color=always 
+		pacman -Sy grep gzip sed --noconfirm --color=always 
 		locale-gen 
 	fi"
 	_DOPROXY_
