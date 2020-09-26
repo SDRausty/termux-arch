@@ -197,7 +197,7 @@ _MAKEFINISHSETUP_() {
 		locale-gen 
 	fi"
 	_DOPROXY_
-	_DOKEYS_
+	# _DOKEYS_
 	cat >> root/bin/"$BINFNSTP" <<- EOM
 	_PMFSESTRING_() {
 	printf "\\e[1;31m%s\\e[1;37m%s\\e[1;32m%s\\e[1;37m%s\\n\\n" "Signal generated in '\$1' : Cannot complete task : " "Continuing...   To correct the error run " "setupTermuxArch refresh" " to attempt to finish the autoconfiguration."
