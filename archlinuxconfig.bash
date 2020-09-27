@@ -101,7 +101,7 @@ _ADDresolvconf_() {
 	_CHECKRESOLVE_() {
 		if [ -f etc/resolv.conf ]
 		then 
-			if ! grep nameserver etc/resolv.conf 1>/dev/null
+			if ! grep 'nameserver 8.8.8.8' etc/resolv.conf 1>/dev/null
 			then
 				_ADDTORESOLVE_
 			fi
