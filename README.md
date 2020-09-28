@@ -2,6 +2,8 @@
 
 ## TermuxArch
 
+![Test](https://github.com/SDRausty/termux-arch/workflows/Test/badge.svg)
+
 ##### -r--r--r-- [setupTermuxArch.bash](https://raw.githubusercontent.com/TermuxArch/TermuxArch/master/setupTermuxArch.bash)
 ##### -rwxrwx--- [setupTermuxArch.bash](https://TermuxArch.github.io/TermuxArch/setupTermuxArch.bash) 
 

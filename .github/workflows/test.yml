@@ -1,0 +1,41 @@
+# Action for this project
+
+name: Test
+
+on:
+  push:
+    branch: [ master ]
+  pull_request:
+    branch: [ master ]
+  release:
+    types: [ published ]
+
+jobs:
+  setupTermuxArch-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with: 
+          python-version: 3.8
+
+      - name: Install Modules
+        run: |
+          python -m pip install -U pip
+          pip install -r requirements.txt
+        
+      - name: Test
+        id: test
+        run: |
+          ./setupTermuxArch he
+          ./setupTermuxArch h
+          ./setupTermuxArch mat
+          ./setupTermuxArch
+          ./setupTermuxArch r
+          ./setupTermuxArch re
+          ./setupTermuxArch ref
+          echo "::set-output name=STATUS::success"
+
