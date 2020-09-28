@@ -33,9 +33,5 @@ jobs:
           ./setupTermuxArch he
           ./setupTermuxArch h
           ./setupTermuxArch mat
-          ./setupTermuxArch
-          ./setupTermuxArch r
-          ./setupTermuxArch re
-          ./setupTermuxArch ref
           echo "::set-output name=STATUS::success"
 
