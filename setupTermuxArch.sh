@@ -5,7 +5,7 @@
 # command 'setupTermuxArch h[elp]' has information how to use this file
 ################################################################################
 IFS=$'\n\t'
-VERSIONID=2.0.366
+VERSIONID=2.0.367
 set -Eeuo pipefail
 shopt -s nullglob globstar
 umask 0022
@@ -231,8 +231,8 @@ then	# get development version from:
 FILE[sha]="https://raw.githubusercontent.com/TermuxArch/gensTermuxArch/master/setupTermuxArch.sha512"
 FILE[tar]="https://raw.githubusercontent.com/TermuxArch/gensTermuxArch/master/setupTermuxArch.tar.gz"
 else	# get stable version from:
-FILE[sha]="https://raw.githubusercontent.com/TermuxArch/termux-arch/master/setupTermuxArch.sha512"
-FILE[tar]="https://raw.githubusercontent.com/TermuxArch/termux-arch/master/setupTermuxArch.tar.gz"
+FILE[sha]="https://raw.githubusercontent.com/TermuxArch/TermuxArch/master/setupTermuxArch.sha512"
+FILE[tar]="https://raw.githubusercontent.com/TermuxArch/TermuxArch/master/setupTermuxArch.tar.gz"
 fi
 if [[ "$DM" = aria2 ]]
 then	# use https://github.com/aria2/aria2
@@ -555,13 +555,6 @@ then
 _INPKGS_
 fi
 }
-_QEMUCFCK_() {
-if [[ -f "$INSTALLDIR/$STARTBIN" ]] && grep -q qemu- "$INSTALLDIR/$STARTBIN"
-then	# set installed qemu architecture
-ARCHITEC="$(ARCTEVAR="$(grep -m1 qemu $INSTALLDIR/$STARTBIN)" && ARCTFVAR=${ARCTEVAR#*qemu-} && cut -d" " -f1 <<< $ARCTFVAR)" && CPUABI="$ARCHITEC" && INCOMM="qemu-user-$ARCHITEC" && QEMUCR=0
-printf "Detected architecture is %s;  Install architecture is set to %s.\\n" "$CPUABI" "$ARCHITEC"
-fi
-}
 _QEMUCFCK_
 if [[ -z "${ARCHITEC:-}" ]]
 then
@@ -592,6 +585,14 @@ fi
 if ! command -v "${INCOMM//-user}"
 then
 _INST_ "${INCOMM//-user}" "$INCOMM" "${0##*/}" || _PSGI1ESTRING_ "_INST_ _QEMU_ setupTermuxArch ${0##*/}"
+fi
+}
+
+_QEMUCFCK_() {
+if [[ -f "$INSTALLDIR/$STARTBIN" ]] && grep -q qemu- "$INSTALLDIR/$STARTBIN"
+then	# set installed qemu architecture
+ARCHITEC="$(ARCTEVAR="$(grep -m1 qemu $INSTALLDIR/$STARTBIN)" && ARCTFVAR=${ARCTEVAR#*qemu-} && cut -d" " -f1 <<< $ARCTFVAR)" && CPUABI="$ARCHITEC" && INCOMM="qemu-user-$ARCHITEC" && QEMUCR=0
+printf "Detected architecture is %s;  Install architecture is set to %s.\\n" "$CPUABI" "$ARCHITEC"
 fi
 }
 
