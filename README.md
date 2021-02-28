@@ -1,6 +1,6 @@
 <link rel="prerender" href="https://sdrausty.github.io/termux-arch/">
 
-## [TermuxArch](https://github.com/SDRausty/termux-arch/)
+## [termux-arch](https://github.com/SDRausty/termux-arch/)
 
 <!--![Test](https://github.com/SDRausty/termux-arch/workflows/Test/badge.svg)
 -->
